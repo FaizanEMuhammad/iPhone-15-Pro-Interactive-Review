@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Project</title>
+    <link href="styles.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyC1kwdCPHCWJj-OUiKT1bwazL37BXS6sqg"></script>
+    <script src="scripts/jquery.cycle2.min.js"></script>
+    <script src="scripts/jquery.ui.map.full.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("nav ul li a").click(function (e) {
+          e.preventDefault();
+          let target = $($(this).attr("href")).position().top;
+          $("html,body")
+            .stop()
+            .animate({ scrollTop: target }, { duration: 500 });
+        });
+        $("#slideshow").cycle({
+          timeout: 7000,
+          fx: "fade",
+          next: "#next",
+          prev: "#prev",
+          pause: true,
+        });
+        $("#main-lens, #telephoto-lens").hide();
+        $("#slideshow").on(
+          "cycle-after",
+          function (
+            e,
+            optionHash,
+            outgoingSlideEl,
+            incomingSlideEl,
+            forwardFlag
+          ) {
+            $("#ultrawide-lens, #main-lens, #telephoto-lens").hide();
+
+            if ($(incomingSlideEl).hasClass("ultrawide")) {
+              $("#ultrawide-lens").show();
+            } else if ($(incomingSlideEl).hasClass("main")) {
+              $("#main-lens").show();
+            } else if ($(incomingSlideEl).hasClass("telephoto")) {
+              $("#telephoto-lens").show();
+            }
+          }
+        );
+        var lastScrollTop = 0;
+        if (lastScrollTop === 0) {
+          $("nav ul li a").removeClass("active");
+          $('nav ul li a[href="#home"]').addClass("active");
+        }
+        $(window).on("scroll", function () {
+          var windowTop = $(window).scrollTop();
+          if (windowTop === 0) {
+            $("nav ul li a").removeClass("active");
+            $('nav ul li a[href="#home"]').addClass("active");
+          } else if (windowTop > lastScrollTop) {
+            console.log("scroll down");
+            $("section").each(function () {
+              var sectionTop = $(this).offset().top;
+              var windowHeight = $(window).height();
+
+              if (
+                sectionTop <= windowTop + windowHeight &&
+                sectionTop >= windowTop
+              ) {
+                var id = $(this).attr("id");
+                $("nav ul li a").removeClass("active");
+                $('nav ul li a[href="#' + id + '"]').addClass("active");
+                $(this).addClass("scrolldown");
+                $(this).removeClass("scrollup");
+              }
+            });
+          } else {
+            console.log("scrolling up");
+            $("section").each(function () {
+              var sectionTop = $(this).offset().top;
+              var windowHeight = $(window).height();
+
+              if (
+                sectionTop <= windowTop + windowHeight &&
+                sectionTop >= windowTop
+              ) {
+                var id = $(this).attr("id");
+                $("nav ul li a").removeClass("active");
+                $('nav ul li a[href="#' + id + '"]').addClass("active");
+                $(this).removeClass("scrolldown");
+                $(this).prev().addClass("scrollup");
+              }
+            });
+          }
+          lastScrollTop = windowTop;
+        });
+
+        $("#myMap").gmap({
+          center: "-33.8688, 151.1093",
+          zoom: 10.5,
+          MapTypeId: google.maps.MapTypeId.SATELLITE,
+          panControl: false,
+          zoomControl: false,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          overviewMapControl: false,
+          disableDefaultUI: true,
+          scrollwheel: false,
+        });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-33.72018307013304, 151.0068843368465",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src = 'media/castletowers.jpeg'> <a href = 'https://www.apple.com/au/retail/castletowers/'>Apple Castle Towers</a></div>",
+              },
+              this
+            );
+          });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-33.694478674579706, 151.09958147577962",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src = 'media/hornsby.jpeg'><a href = 'https://www.apple.com/au/retail/hornsby/'>Apple Hornsby</a></div>",
+              },
+              this
+            );
+          });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-33.784125042180264, 151.1854121599769",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src='media/chatswoodchase.jpeg'><a href = 'https://www.apple.com/au/retail/chatswoodchase/'>Apple Chatswood Chase</a></div>",
+              },
+              this
+            );
+          });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-33.862805822507305, 151.20568003912118",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src = 'media/sydney.jpeg'><a href = 'https://www.apple.com/au/retail/sydney/'>Apple Sydney</a></div>",
+              },
+              this
+            );
+          });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-33.87704375687864, 151.19343158388122",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src='media/broadway.jpeg'><a href = 'https://www.apple.com/au/retail/broadway/'>Apple Broadway</a></div>",
+              },
+              this
+            );
+          });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-34.02574938283937, 151.09948576748823",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src='media/miranda.jpeg'><a href = 'https://www.apple.com/au/retail/miranda/'>Apple Miranda</a></div>",
+              },
+              this
+            );
+          });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-33.73405991671238, 150.6908795816231",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src='media/penrith.jpeg'><a href = 'https://www.apple.com/au/retail/penrith/'>Apple Penrith</a></div>",
+              },
+              this
+            );
+          });
+        $("#myMap")
+          .gmap("addMarker", {
+            position: "-33.88909599198878, 151.25080433308497",
+          })
+          .click(function () {
+            $("#myMap").gmap(
+              "openInfoWindow",
+              {
+                content:
+                  "<div class = 'mapwindow'><img src='media/bondi.jpeg'><a href = 'https://www.apple.com/au/retail/bondi/'>Apple Bondi</a></div>",
+              },
+              this
+            );
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#buildquality">Build Quality</a></li>
+        <li><a href="#display">Display</a></li>
+        <li><a href="#perfomance">Perfomance</a></li>
+        <li><a href="#camera">Camera</a></li>
+        <li><a href="#battery">Battery</a></li>
+        <li><a href="#wheretobuy">Where To Buy</a></li>
+      </ul>
+    </nav>
+    <main>
+      <section id="home">
+        <h1>iPhone 15 Pro Review</h1>
+        <figure>
+          <img src="./media/home.jpg" />
+          <a href="https://www.apple.com/au/iphone-15-pro/">Source: Apple</a>
+        </figure>
+        <div class="review-text">
+          <p>
+            Welcome to my in-depth review of the iPhone 15 Pro, Apple's latest
+            flagship that's capturing attention worldwide. In my analysis, I
+            delve deep into the five cornerstone elements that define a
+            smartphone's prowess. Join me as I unravel the intricacies of its
+            build quality, marvel at the display's brilliance, gauge its
+            unmatched performance, capture moments through its state-of-the-art
+            camera, and test the resilience of its battery. Discover if the
+            iPhone 15 Pro truly stands out in the ever-evolving realm of
+            smartphones.
+          </p>
+        </div>
+      </section>
+      <section id="buildquality">
+        <h1>Stronger, Lighter and Ergonomic</h1>
+        <div id="review-container">
+          <div id="image-grid">
+            <img id="img1" src="media/buildquality3.jpg" />
+            <img id="img2" src="media/buildquality2.jpg" />
+            <img id="img3" src="media/buildquality1.jpg" />
+            <a href="https://unsplash.com/s/photos/iphone-15-pro">Source: Unsplash</a>
+          </div>
+          <div class="review-text">
+            <p>
+              Reinventing Craftsmanship with Titanium From its inception, Apple
+              has consistently pushed the boundaries in marrying design
+              aesthetics with top-notch materials. With the iPhone 15 Pro, Apple
+              has once again elevated the build quality game in the smartphone
+              industry. For the first time in iPhone history, they have
+              integrated aerospace-grade titanium into the device's
+              construction, a material previously reserved for the rigors of
+              space missions to planets like Mars. When you hear
+              "aerospace-grade," you might wonder what sets it apart. This
+              specific grade of titanium is renowned for its remarkable
+              strength-to-weight ratio, setting it apart from other metals
+              commonly used in the consumer electronics sector. The promise it
+              brings is a phone that is not just robust and resistant to wear
+              and tear but also lighter in weight. Apple claims this is their
+              "lightest Pro models ever," and when you get your hands on the
+              iPhone 15 Pro, the distinction in heft and sturdiness is palpable.
+              Moreover, this isn't just about the material change for the sake
+              of novelty. Titanium offers significant durability benefits,
+              especially for a device that's constantly in use and exposed to
+              the rigors of daily life. The inherent strength of titanium
+              ensures that the iPhone 15 Pro can withstand accidental drops and
+              dings with better resilience, potentially reducing those
+              heart-stopping moments for users when their precious phone slips
+              out of their grasp.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="display">
+        <h1>Fluid and responsive</h1>
+        <figure>
+          <img src="media/Display.gif" />
+          <a
+            href="https://tenor.com/view/apple-apple-iphone-apple-iphone14-apple-iphone14pro-apple-iphone14pro-max-gif-26669230"
+            >Source: Tenor Gifs</a
+          >
+        </figure>
+
+        <div class="review-text">
+          <p>
+            The iPhone 15 Pro's display is nothing short of groundbreaking. With
+            its ProMotion LTPO technology, users get an incredibly fluid
+            experience, with refresh rates that can soar up to 120Hz. This
+            ensures that everything from scrolling through web pages to gaming
+            feels buttery smooth. But what truly sets it apart is its ability to
+            dial down to a refresh rate of just 1Hz when static, thereby
+            significantly conserving battery life. The dynamic island feature is
+            another innovative addition, enhancing the user's interaction with
+            the display in ways we've never seen before. The adaptive nature of
+            the display, adjusting not just based on content but also based on
+            the environment and user interaction, sets a new gold standard in
+            smartphone displays.
+          </p>
+        </div>
+      </section>
+      <section id="perfomance">
+        <h1>A snappy monster</h1>
+        <div id="review-container">
+          <figure>
+            <img src="media/perfomance.gif" />
+            <a href="https://www.apple.com/au/iphone-15-pro/">Soruce: Apple</a>
+          </figure>
+          <div class="review-text">
+            <p>
+              The iPhone 15 Pro, powered by the revolutionary A17 Pro chip, is
+              truly a game-changer in the realm of mobile performance. Its
+              graphics capabilities are unparalleled, ensuring mobile gaming
+              experiences that are immersive and incredibly detailed.
+              Environments are richly rendered, and characters have never looked
+              more realistic on a smartphone screen. Beyond the enhanced visual
+              appeal, the A17 Pro's industry-leading speed and efficiency
+              redefine what one can expect from a mobile device. This isn't just
+              about faster app launches or smoother UI transitions; the iPhone
+              15 Pro is now in the league of consoles, capable of handling games
+              with advanced ray tracing and Metal FX upscaling. Such features
+              were once reserved for dedicated gaming systems, but Apple has
+              blurred the lines between console and mobile gaming.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="camera">
+        <h1>Capture What your eyes see</h1>
+        <div id="slideshow">
+          <img src="media/utlrawide.jpg" class="ultrawide" />
+          <img src="media/main.jpg" class="main" />
+          <img src="media/telephoto.jpg" class="telephoto" />
+        </div>
+        <div id="image-source">
+          <a href="https://www.apple.com/au/iphone-15-pro/">Source: Apple</a>
+        </div>
+        <div id="slideshow-controls">
+          <button id="prev">&lt;</button>
+          <button id="next">&gt;</button>
+        </div>
+        <div class="review-text">
+          <div id="ultrawide-lens">
+            <h3>0.5x</h3>
+            <p>
+              The wide-angle camera has always been a favorite for landscape and
+              architecture enthusiasts, but with its new macro shooting
+              capabilities, the iPhone 15 Pro has further broadened its appeal.
+              The ability to capture detailed macro shots transforms everyday
+              objects into fascinating subjects. From the intricate patterns on
+              leaves to the delicate textures of fabrics, the macro capability
+              is a delightful feature for those who appreciate the smaller
+              details in life.
+            </p>
+          </div>
+          <div id="main-lens">
+            <h3>1.0x</h3>
+            <p>
+              With the introduction of the 48MP main lens, the iPhone 15 Pro
+              takes clarity and detail to a whole new level. Every image shot
+              with this lens reveals intricate details, and the improvement is
+              especially noticeable in challenging lighting conditions. The
+              prowess of this lens in low-light environments is astounding.
+              Nighttime photos are clearer, with reduced noise and better color
+              accuracy. Shadows and highlights are beautifully balanced, making
+              for some truly Instagram-worthy shots.
+            </p>
+            
+          </div>
+          <div id="telephoto-lens">
+            <h3>5.0x</h3>
+            <p>
+              One of the most notable additions is the 5x telephoto lens. This
+              lens allows users to zoom in closer to subjects without
+              sacrificing image clarity. Whether you're capturing distant
+              landscapes or trying to get a close-up shot in a crowded space,
+              this lens offers versatility that was previously unmatched in
+              prior models.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="battery">
+        <h1>Battery that lasts</h1>
+        <figure>
+          <img src="media/battery.gif" />
+          <a
+            href="https://medium.com/@gunjangangani30/apple-new-iphone-15-se-6e25bea22cfb"
+            >Source: Medium</a
+          >
+        </figure>
+        <div class="review-text">
+          The iPhone 15 Pro boasts impressive battery longevity tailored to
+          modern usage patterns. With video playback stretching up to 29 hours
+          and streamed content reaching a commendable 25 hours, users are
+          ensured long hours of entertainment without frequent recharges. For
+          those leaning towards audio consumption, an astonishing 95-hour
+          playback is a significant leap, suggesting days of uninterrupted audio
+          experience. The device also champions versatility in charging methods:
+          from the proprietary MagSafe's 15W wireless charging to the universal
+          Qi's 7.5W, flexibility is at the user's fingertips. The fast-charge
+          feature is the icing on the cake, with a promise of reviving half the
+          battery in just about 30 minutes with a 20W adapter. However, it's
+          worth noting the adapter is sold separately. In summation, the iPhone
+          15 Pro ensures users are less tethered to the charging cable and more
+          immersed in their digital experiences.
+        </div>
+      </section>
+      <section id="wheretobuy">
+        <h1>Get yourself the iPhone 15 Pro in Sydney</h1>
+        <div id="myMap"></div>
+        <div class="review-text">
+          <p>
+            The iPhone 15 Pro is available at all Apple stores in Sydney. Click
+            on the markers to find out more about each store.
+          </p>
+      </section>
+    </main>
+  </body>
+</html>
