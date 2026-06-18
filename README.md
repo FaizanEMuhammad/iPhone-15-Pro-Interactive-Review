@@ -22,4 +22,3 @@ This project is a major interactive article developed for a Web Development asse
 *   **Interaction:** jQuery has been implemented to provide meaningful user interaction, satisfying the requirement to challenge professional judgment in web design.
 
 ---
-*Created for [Unit Name/Code] Major Project.*
